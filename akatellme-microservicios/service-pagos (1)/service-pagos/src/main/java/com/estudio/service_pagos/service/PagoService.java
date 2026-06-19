@@ -31,7 +31,7 @@ public class PagoService {
         try{
             Object reserva = webClientBuilder.build()
                 .get()
-                .uri("http://localhost:8083/reservas/"+ pago.getReservaId())
+                .uri("http://localhost:8083/api/v1/reservas/"+ pago.getReservaId())
                 .retrieve()
                 .bodyToMono(Object.class)
                 .block();

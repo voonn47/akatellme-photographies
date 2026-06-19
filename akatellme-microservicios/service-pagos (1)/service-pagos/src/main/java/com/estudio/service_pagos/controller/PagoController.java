@@ -10,26 +10,33 @@ import org.springframework.web.bind.annotation.*;
 import com.estudio.service_pagos.model.Pago;
 import com.estudio.service_pagos.service.PagoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
-@RequestMapping("/pagos")
-
+@RequestMapping("/api/v1/pagos")
+@Tag(name = "Pagos", description = "Operaciones relacionadas con la gestion de pagos")
 public class PagoController {
     @Autowired
     private PagoService pagoService;
+
+    @Operation(summary = "listar todos los pagos")
 
     @GetMapping
     public List<Pago> listar(){
         return pagoService.listarTodos();
     }
 
+
+    @Operation(summary = "buscar un pago por id")
     @GetMapping("/{id}")
     public ResponseEntity<Pago> obtener(@PathVariable Long id){
         return pagoService.buscarPorId(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
-
+    @Operation(summary = "Registrar un nuevo pago")
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Pago pago){
         try{
@@ -39,6 +46,8 @@ public class PagoController {
             
         }
     }
+
+    @Operation(summary = "Eliminar un pago")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         pagoService.eliminar(id);
