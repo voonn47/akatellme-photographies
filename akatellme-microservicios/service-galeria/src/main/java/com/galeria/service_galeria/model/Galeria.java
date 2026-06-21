@@ -27,10 +27,7 @@ public class Galeria {
     @Schema(description = "Identificador de lagaleria", example = "1")
     private Long id;
 
-    @NotNull(message = "La reserva es obligatoria")
-    @Positive(message = "El id de reserva debe ser mayor a 0")
-    @Schema(description = "ID de la reserva asociada", example = "1")
-    private Long reservaId;
+    
 
     @NotBlank(message = "El nombre de la galeria no puede estar vacio")
     @Schema(description = "Nombre de la galeria", example = "Sesion Familiar")
@@ -41,6 +38,11 @@ public class Galeria {
 
     @Schema(description = "Fecha de creacion de la galeria", example = "2026-06-16")
     private LocalDate fechaCreacion;
+
+    @NotNull(message = "La reserva es obligatoria")
+    @Positive(message = "El id de reserva debe ser mayor a 0")
+    @Schema(description = "ID de la reserva asociada", example = "1")
+    private Long reservaId;
 
 
 
