@@ -3,28 +3,33 @@ package com.service.notificaciones.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 import com.service.notificaciones.model.Notificacion;
 import com.service.notificaciones.service.NotificacionService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/notificaciones")
-@CrossOrigin(origins = "*") 
-public class NotificacionController 
-{
+@CrossOrigin(origins = "*")
+@Tag(
+    name = "Gestión de Notificaciones",
+    description = "Permite administrar las notificaciones del sistema"
+)
+public class NotificacionController {
+
     @Autowired
     private NotificacionService notificacionService;
 
     @GetMapping
-    public ResponseEntity<List<Notificacion>> listar()
-    {
+    @Operation(summary = "Obtener todas las notificaciones")
+    public ResponseEntity<List<Notificacion>> listar() {
+
         List<Notificacion> notificaciones =
                 notificacionService.listarTodo();
 
@@ -32,18 +37,19 @@ public class NotificacionController
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Notificacion> buscar(
-            @PathVariable Long id)
-    {
+    @Operation(summary = "Buscar una notificación por ID")
+    public ResponseEntity<Notificacion> buscar(@PathVariable Long id) {
+
         return notificacionService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
+    @Operation(summary = "Registrar una nueva notificación")
     public ResponseEntity<?> guardar(
-            @Valid @RequestBody Notificacion notificacion)
-    {
+            @Valid @RequestBody Notificacion notificacion) {
+
         try {
 
             Notificacion nuevaNotificacion =
@@ -62,10 +68,11 @@ public class NotificacionController
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar una notificación por ID")
     public ResponseEntity<?> actualizar(
             @PathVariable Long id,
-            @Valid @RequestBody Notificacion notificacion)
-    {
+            @Valid @RequestBody Notificacion notificacion) {
+
         try {
 
             return notificacionService.buscarPorId(id)
@@ -89,15 +96,15 @@ public class NotificacionController
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable Long id)
-    {
+    @Operation(summary = "Eliminar una notificación por ID")
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+
         try {
 
             notificacionService.eliminar(id);
 
-            return new ResponseEntity<>(
-                    "Notificación eliminada correctamente",
-                    HttpStatus.NO_CONTENT);
+            return ResponseEntity.ok(
+                    "Notificación eliminada correctamente");
 
         } catch (Exception e) {
 
