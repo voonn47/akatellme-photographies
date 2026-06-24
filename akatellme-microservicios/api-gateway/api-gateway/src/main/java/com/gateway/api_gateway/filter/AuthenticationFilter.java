@@ -68,12 +68,12 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 String methodStr = (method != null) ? method.name() : "";
                 
                 
-                boolean esRutaConfiguracion = path.startsWith("/fotografos") || path.startsWith("/tipos-sesion");
+                boolean esRutaConfiguracion = path.startsWith("/fotografos") || path.startsWith("/tipos-sesion") || path.startsWith("/api/v1/reservas");
                 boolean esMetodoEscritura = methodStr.equals("POST") || methodStr.equals("PUT") || methodStr.equals("DELETE");
                 
                 if (rolesRaw != null && esRutaConfiguracion && esMetodoEscritura && rolesRaw.contains("CLIENTE")) {
                     return onError(exchange, 
-                        "Lo sentimos, tu cuenta de CLIENTE no tiene permisos para modificar fotógrafos ni tipos de sesión. Esta función está reservada para FOTÓGRAFOS o ADMINISTRADORES.", 
+                        "Los usuarios cliente solo tienen permiso de lectura.", 
                         HttpStatus.FORBIDDEN);
                 }
                 
